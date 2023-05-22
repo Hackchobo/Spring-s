@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.wow.WowMapper">
+    <insert id="insWow">
+        INSERT INTO t_Wow
+        (title, ctnt, writer)
+        VALUES
+        (#{title},#{ctnt},#{writer})
+    </insert>
+
+    <select id="selWow" resultType="WowEntity">
+        SELECT * FROM t_wow
+    </select>
+
+    <select id="selWowById" resultType="WowEntity">
+        SELECT * FROM t_wow
+        WHERE no= #{no}
+    </select>
+
+    <update id="updWow">
+        UPDATE t_wow
+        SET title= #{title},
+        ctnt = #{ctnt},
+        writer = #{writer},
+        update_Date = current_timestamp()
+        WHERE no= #{no}
+    </update>
+
+    <delete id="delWow">
+        DELETE FROM t_wow
+        WHERE no = #{no}
+    </delete>
+</mapper>

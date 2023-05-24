@@ -1,5 +1,9 @@
 #db config
 spring:
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 12MB
   mvc:
     static-path-pattern: /static/**
   datasource:
@@ -13,7 +17,11 @@ mybatis:
   type-aliases-package: com.green.board7 #???? ????? ???? ??? ??? ? / ?????? ???? ?
   mapper-locations: mapper/**/*.xml
 
-# wagger
+# swagger
 springdoc:
   swagger-ui:
     path: /swagger.html
+
+#업로드용 file ~~~
+file:
+  dir: D:/download/ # 전역변수에 저장이 된다.

@@ -1,0 +1,15 @@
+스프링 부트 만드는 순서 
+xml 만들고 -> Controller.class -> Service.class -> Mapper.interface -> Entity.class
+
+여기서 Entity는 순결을 지켜야하며 (@Data)
+Vo 에서 다른 작업들을 하면된다.
+
+Entity(데이터,Vo) 에는 테이블의 타입 및 이름
+Mapper.interface(@Mapper) 를 Service(@Service)에서 받고 Service를 Controller(@RestController, @RequestMappring("/OOO"))가 받는다. -> 기본생성자를 만들기 위해 private final ooo ooo을 하고 그것으로 기본생성자 생성 해야됨 
+
+
+
+
+
+
+

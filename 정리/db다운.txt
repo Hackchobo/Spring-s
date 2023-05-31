@@ -1,0 +1,2 @@
+maria db.org 에서 10.11.2 다운로드 비번은 green502로 선택 
+https://dev.mysql.com/doc/index-other.html -> sakila database를 다운 받아야됨

@@ -1,0 +1,221 @@
+-- 5/17
+저장방식은 jar , war
+매이븐은 문구만 누르면 라이브러리다운, 셋팅, 연관된것을 모두 다운로드를 해주는 것이다. 
+(https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui/2.1.0) -> 라이브러리 추가해주는 사이트
+소스를 다운받고 우측상단에 리셋버튼을 눌러줘야 라이브러리 추가가된다. 단 줄을 삭제하면 라이브러리 삭제됨
+
+//bean등록(콩등록) - 스프링이 알아서 컨트롤러를 만들어 준다. 
+Spring Bean은 스프링 컨테이너에서 관리하는 자바 객체를 의미한다. 
+빈은 스프링 컨테이너에 의해 인스턴스화 되며, 인스턴스화된 빈은 getBean() 메소드를 통해 가져와서 사용할 수 있고, @Autowired 어노테이션으로 의존 객체를 주입 받을 수 있다. -> 이게 없으면 DI스프링에서 자동으로 객체화 시켜줌
+@RestController // Controller를 하면 화면 단이 필요하고, RestController는 화면단이 필요없다., JSON형태로 객체데이터를 변환하는것
+@RequestMapping("/work") // /work로 들어오면 받는다라는 뜻
+
+구문을 브라우저 상에서보고싶으면 http://localhost:8080/test/test2 // 이런식으로 하면됨
+
+RestfulAPI - 주소값을 통일 시키기위해 사용한다. 오버로딩과 비슷한 효과를 낸다. 구분은 메소드로 한다
+메소드 종류
+
+http 통신 메소드
+CRUD - 값을 다루는 개념이다.
+C(post)R(get)U(put)D(delete)
+post - 값을 만든다 (Create)
+,get(2) - 읽어 오는 것  (Read)
+,put(patch) - 값을 수정한다. (Update)
+,delete - 삭제  (Delete)
+
+RestFulAPI 예제
+(post) /boatd
+(get) /boatd
+(get) /boatd/1 -> 1은 Path Variable 
+(put) /boatd
+(delete) /boatd
+
+html단에서는 기본으로 옆으로 정렬이 된다. 고로 밑으로 정렬을 시키고 싶으면 <br>을 사용 하면 된다.
+get 방식 예제
+<a href="http://localhost:8080/test/test1">테스트1 이동</a>
+    <a href="http://localhost:8080/board">board 이동</a>
+    <a href="http://localhost:8080/board/1">board 1번글 이동</a>
+
+Talend API Tester - Free Edition -> 자바스크립트를 사용하기 쉽게 만들어주는 프로그램
+
+@ <- 어노테이션 이라고 한다.
+
+쿼리 스트링 - 주소값에 뒷쪽에 ? 로 시작한다. 키값과 벨류 값을 적는다. 
+예제 -> return String.format("contents : test1, name:%s, age: %d",name,age) ;
+ lombog -> 이것이 있으면 간편해진다. -> 최고임 (안에 getter,setter 메소드 및 Tostring 메소드가 들어 가있음)
+ToString -> 모든 객체는 가지고있는것이다 이유는 오브젝트에 있기때문에 내가 원하는 객체의 주소값및 나타내고싶은 것을 나타내준다.
+
+프론트엔드와는 키값을 맞춰서 작업을 하도록 한다.
+Post 로 프론트엔드에서 날라온다. form 으로도 날릴수있다. Json형태로도 가능하다
+
+<div><input type="submit" value="전송2"></div> -> form 테그 안에 있으면 바로실행이지만 밖에 잇으면 바로 실행은안된다.
+
+"iboard" : iboard, -> 자바스크립트 에서 축약 형이 되어서 사용하기 좋음
+@CrossOrigin // 기본적으로 통신을 막는다. 그래서 CrossOrigin사용하면 백그라운드 통신이 가능해진다.
+쿼리스트링 시작은 ? 로 시작 하며( 키는 밸류 & 키는 밸류 )사이는 &로 구분을 짓는다.
+
+클라이언트가 서버와 통신할때 쓰는 3가지 방법
+1.  Query String(쿼리 스트링) - 쿼리스트링 시작은 ? 로 시작 하며( key값=value값 & key값=value )사이는 &로 구분을 짓는다. (get방식은 쿼리 스트링을 사용한다.)
+2. 3. body에 데이터를 담아서 보낼수있다.(바디에 담을때 JSON - body에 넣는다.,폼데이터 인지 차이점이 있다. -> 백엔드가 받는 방식이 달라짐)
+관리면에서는 통일 시켜서 하는게 좋다.
+- 쿼리스트링 특징, 주소뒤에 ?aaaa=ffff
+- JSON의 특징 body에 담는다.{"aaa"->key :"ffff"->value,"bbb":1}
+- FormData의 특징 
+- Path Variable - 쿼리스트링 대체로 하는게 좋다 get방식으로 하는걸 추천 PK값만 보낸다면 이거함 get이 2개이상 사용할때 사용
+예를들어 쇼핑몰 운영을 할때 첫번째 게시판 (get)/shop 자세한 게시판(get)/shop2/4/700 <-디테일 이런식으로 사용 
+@GetMapping("/board/{iboard}")
+    public String getBoardDetail(@PathVariable int iboard) {
+        return iboard + "글 디테일";
+    } // Path Variable 예제
+
+폼데이터는 
+    @PostMapping("/board")
+    public String postBoard(BoardEntity entity) {
+        System.out.println(entity);
+        return "글 등록 완료";
+    } -> 이렇게 받을 수있다.
+
+JSON은 @RequestBody로 무조건 받는다.(프론트 엔드에서 전송하는 방식이 될것같음) -JSON 만됨
+{""} -> {}로 해야 하며 "" 는 키값임 "를 사용하려면 \" 이렇게 해줘야 됨
+
+현재까지 만든게 Restful API -> 메소드로 구분을 짓는다라는 개념
+
+CRUD
+
+post/get(2)/put(patch)/delete
+put 전체수정 patch 부분수정
+get 리스트를 뿌리는get
+리스트를 보는 디테일도 get 그래서 2개쓸수있음
+PatVariable -> ㅍㅐ스변수
+
+(get)/board
+(post))/board
+(post))/boardMod
+(get))/boardDel
+
+
+-------------------
+JDBC API->즉 다양한 형태의 관계형 데이터베이스에 접속하여 자바 프로그래밍 언어와 데이터베이스 사이에 데이터를 주고받을 수 있도록 지원하는 표준 자바 응용 프로그래밍 인터페이스이다.
+MyBatis Framework-> 객체지향 언어인 자바의 관계형 데이터 베이스 프로그래밍을 좀더 쉽게 할수 있게 도와주는 개발 프레임워크이다.
+MariaDB Driver-> 어떤 DB를 사용하여 연결할지 드라이버 
+
+create table t_board(
+    iboard int unsigned auto_increment,
+    title varchar(100) not null,		-- 
+    ctnt text not null,			-- 이렇게 3개가 인서트일때 중요하다
+    writer varchar(10) not null,		--
+    created_at datetime default current_timestamp(),
+    updated_at datetime default current_timestamp,
+    primary key (iboard)
+);
+
+private BoardService service; -> DI 디펜더스 인젝션 을 해준것이다.
+
+// xml 은 쿼리문 저장, interface는 메소드를 만드는 선언문 리턴타입과 파라미터 보고 문구를 만들어 줌
+// xml 이랑 interface 연결점이 DAO
+
+BoardMapper.interface 와 BoardMapper.xml 이랑 셋트이다.
+
+-- 05/18
+객체 A,B,C 가있을때 보통은 C를 빈등록 한다. 
+스프링을 한다면 M,V,C 를 따라야 한다
+Model - DB관련
+View - 화면단 
+Contriller - Model과 View 를 합춰주는 역활
+Entitiy(개체) 가붙으면 테이블과 같은역활(저장용)
+
+@Autowired는 멤버필드(final을 지워 줘야됨), setter 메소드를 만들어 쓰는 방법, 생성자에 넣는방법(가장 권장)
+
+DAO
+코넥션(Connection)
+스테이드먼드 (Statement) --
+리절스 셋(ResultSet)
+try{}
+catch(){} 
+이렇게 받는다. 
+
+-- 05/22
+yaml
+생성 순서
+생성을 하고 ->resoutces에서 mapper생성(application.yaml) yaml로 변경해주고 spring classname , mybatis package 생성 -> resoutces에 mapper 생성 -> 자바에 콘트롤러 프로젝트 생성 ->Service를 생성(@Service 해줘야됨) -> Mapper 클래스 생성(@Mapper 해줘야됨) -> xml파일 생성(마이바티스 url복사, 맵퍼패키지는 클래스의 풀네임)
+
+Vo 는 셋터가 없고(데이터가 변경이 되지 않았으면 하는것)DB에서 프론트에게 넘길때, DTO는 셋터가 있다.(왠만하면 프론트엔드에서 넘어오는 것이라고 본다.)데이터넘어 오는역활,Entity (테이블이랑 구조가 비슷하다., 똑같다.) DB랑 1:1 , 
+Entity(순수해야 됨)를 늘리는것 보다 페이징을 할때는 Dto를 건들이는게 좋다.
+
+xml에서 $<-는 정수부분을 나타내줄수있다. # 써도 상관없다고 한다.
+void 면 내가 직접 행을 지정해주어야 한다.
+int 면 영향 받은 행을 리턴해준다.
+
+AllArgsConstructor -> 은 컬럼 갯수가 똑같아야 한다.
+스웨거-- https://springdoc.org/ -> 여기들어간다음 -> 2.Getting Started 에 있는 구문 복붙
+확인할때는 http://localhost:8080/swagger-ui/index.html 여기로 확인 하면 됨
+
+도커(Docker) -> 컨테이너 라고 하며 서버이동을 할때 엄청 자유로움
+
+Controller 에 @Tag(name="게시판", description="게시판 부제목")
+@PostMapping
+@Operation(summary = "안내 안내", desctiption = "글등록" <EM> <br> -> <> 는 기능들
+
+Dto쪽에는 @schema(description = "작성자", nullable = true)
+-- 여기까지 스웨거
+
+--로드 백
+<!-- TRACE > DEBUG > INFO > WARN > ERROR
+        trace : debug보다 더 상세한 메시지를 표현하기 위한 레벨 의미
+        debug : 앱 디버깅을 위한 메시지를 표시하는 레벨 의미
+        info : 앱의 상태 변경과 같은 정보 전달을 위해 사용
+        warn : 시스템 에러의 원인 될 수 있는 경고 레벨 의미
+        error : 로직 수행 중에 시스템에 심각한 문제가 발생해서 앱의 작동이 불가능한 경우를 의미
+ -->
+
+private final Logger LOGGER; -> 로그를 사용하고 싶을때 넣어줘야 하는 구문이다.
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; -> 임포트는 이거다.
+LOGGER = LoggerFactory.getLogger(BoardController.class); -> 클래스로 불러와줘야 한다.
+똑같은 이름을 임포트를 할때 여러개를 사용하고싶으면 풀네임을 적어야 된다.
+
+https://byeong9935.tistory.com/110 -> db연결 (참고)
+
+--05/23
+홈페이지에 이름을 넣고 싶으면 클래스 상에서 @Tag를 적어주면 된다.(컨트롤러)
+DTO 쪽에 는 @SCEMA(스케마)
+hibernate-validator maven
+spring boot requestparam validation 유효성 검사 
+
+(@RequestParam @Min(value = 1, message = "page값은 1이상이어야 합니다. ㅋㅋㅋ") int page
+                                    ,@RequestParam(defaultValue = "30") int row) -> 컨트롤에서 페이징 처리해줄때 무조건 해줘야 되는 구문임
+
+프론트엔드에서 받을때 첫페이지는 화면 다운로드 페이지이다.
+
+--05/24
+@RequestPart(JSON을 받을거라서) 를 사용할때 순수하게 파일 만 받는다면 -> 파일을 받을때는 @RequestPart를 무조건 써줘야됨
+(consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE}) <-이걸 써주는게 좋다
+
+파일 업로드를 할때 application.yaml를 수정해주어야 한다.
+uuid -> 100년에 한번 겹칠수있지만 그정도로 안겹친다. (자바의 내장되어있는 기능중 하나이며 영어,숫자로이루어진 랜덤한 파일명을 생성해준다. 
+
+String savedFileName = uuid +ext; // 경로가 내가 정확 한지 알경우 이걸 쓰면 된다.
+String savedFilePath = fileDir + savedFileName; // 내가 경로를 잘모를 때 사용
+
+  servlet:
+    multipart:
+      max-file-size: 3MB -> 한파일당 최대 크기
+      max-request-size: 12MB -> 모든 파일 최대크기
+
+MediaType.APPLICATION_JSON_VALUE -> 이미지를 포함한 다른것들도 받는다
+MediaType.MULTIPART_FORM_DATA_VALUE -> 이미지 데이터를 받을때 
+
+public void fileupload(@RequestPart MultipartFile img){ // -> JSON에서 파일 받을 때는 @RequestPart를 사용해서 파일 데이터를 받는다.
+파일은 무조건 MultipartFile 이다. (동영상, 사진, 모든파일등)
+
+//원래 파일 이름 추출
+        String originfileName = img.getOriginalFilename();
+
+        //파일 이름으로 사용할 uuid 생성
+        String uuid = UUID.randomUUID().toString();
+
+transferTo-> 파일객체를 찾아 가는 구문
+예제 img.transferTo(file);
+
+빌더패턴(@Build)쓰면 내가 원하는 값만 객체생성 가능 . <- 으로 계속 추가
+빌더패턴은 생성자를 이용하는건데 최초에 객체생성할때 내가원하는 것만 불러 낼수있는것 (기본적으로 체이닝 기법을 한다.)

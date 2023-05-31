@@ -1,0 +1,120 @@
+?? - local
+SVN - 중앙집중 -> 계속 파일을 그대로 복사하기때문에 용량이 기하급수적으로 늘어남 단,복사된것 하나만 있어도 된다.
+Git - local,중앙집중 -> 파일의 수정된 것들만 저장함 단, 뒤에 파일이 있어야 하므로 위험함
+
+커널 - 하드웨어와 소프트웨어를 연결시켜 주는 역활을 한다. 개발자 - 리누즈 코발즈
+
+commit -> 로컬에 저장 하는 작업
+push -> 온라인으로 올리는 작업
+
+
+erd, 회의록, Db에서 더미데이터 만들어 주기, 스웨거 
+
+http://localhost:8080/fileupload?file=1 -> 이미지 다운
+
+https://url.kr/ukoae2 -> 쌤노션
+
+
+-------------------------------------------------------------------------------------
+프로젝트 실행기
+-- 사용자
+-- iuser
+-- uid
+-- upw
+-- nm
+-- gender
+-- addr
+-- main_pic
+-- created_at
+-- updated_at
+CREATE DATABASE team_f;
+CREATE TABLE t_user(
+	iuser BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	uid VARCHAR(20) NOT NULL UNIQUE,
+	pw VARCHAR(100) NOT NULL,
+	nm VARCHAR(30) NOT NULL,
+	gender CHAR(1) NOT NULL CHECK(gender IN('M', 'F')),
+	addr VARCHAR(100) NOT NULL,
+	main_pic VARCHAR(100),
+	created_at DATETIME not null default CURRENT_TIMESTAMP,
+	updated_at DATETIME not null default CURRENT_TIMESTAMP
+);
+
+-- 게시판
+-- 게시물 번호, 제목, 내용, 작성자, 작성일시, 수정일시
+DROP TABLE t_board;
+CREATE TABLE t_board(
+	iboard BIGINT UNSIGNED AUTO_INCREMENT primary KEY,
+	title VARCHAR(50) NOT NULL,
+	ctnt TEXT NOT NULL,
+	iuser BIGINT UNSIGNED NOT null COMMENT '작성자',
+	created_at DATETIME NOT NULL default CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL default CURRENT_TIMESTAMP,
+	FOREIGN KEY(iuser) REFERENCES t_user(iuser)
+);
+
+-- 댓글
+-- pk, iboard, 작성자, 내용, 작성일시, 수정일시
+CREATE TABLE t_board_cmt (
+	iboard_cmt BIGINT UNSIGNED AUTO_INCREMENT primary KEY,
+	iboard BIGINT UNSIGNED NOT null COMMENT '글번호',
+	iuser BIGINT UNSIGNED not null COMMENT '작성자',
+	cmt VARCHAR(255) NOT NULL,
+	created_at DATETIME NOT NULL default CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL default CURRENT_TIMESTAMP,
+	FOREIGN KEY(iboard) REFERENCES t_board(iboard),
+	foreign KEY(iuser) REFERENCES t_user(iuser)
+);
+
+복합키를 주고싶을때는 밑에 primary key(pk) 값을 주어야 한다 무조건임
+
+
+JSP
+/user
+(post) 회원가입
+(post) 로그인
+(patch) /pw 비밀번호 수정
+(patch) /pic 프로필사진 수정
+(delete) 탈퇴 (탈퇴하면 게시글까지 삭제 해야됨)
+
+/board
+(get) /maxpage?row=40 마지막 page값
+(get) ?page=1&row=40 리스트
+(get) /{board} 디테일(댓글 5, 댓글 maxpage값)
+(post) 글등록
+(put) 글수정
+(delete) 글삭제
+
+/board/cmt
+(post) 댓글 등록
+(get) /{iboard}?page=2(갯수 5개씩)
+(put) 수정
+(delete) 삭제
+
+
+com.green.boardver2
+
+스웨거 설정
+<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+-- 로그인은 @Post방식으로 해야지 된다.(@get으로 하면 공개된로그인이됨)
+
+-- 5/31
+
+resultType -> integer or int 사용하면 됨
+테이블명을 바꿀때는 #{} 대신에 ${}을 사용 하여 한다.
+로그인 유지하는 방법은 JWT(Json Wep Token) 를 사용하여 유지시킬수 있다.
+JWT 를 사용하려면 Spring Security 를 사용해서 서버를 바꾸어야 한다.
+
+@RequestBody - 한번에 데이터값을 다받는다 (DTO값을 다나타내줌)
+@RequestParam - 데이터 값을 하나 하나 나타내줌
+@PateVariable - 주소값으로 받는것 (/ 뒤에 있는 값을 받음)
+
+게시물을 수정한뒤 게시물을 다시 보여주는 구문 xml에서 insBoard 에 useGeneratedKeys="true" keyProperty="iboard" 적어 준다.
+pk의 값은 BoardInsDto에 준다.
+
+http://localhost:8080/swagger-ui/index.html#/

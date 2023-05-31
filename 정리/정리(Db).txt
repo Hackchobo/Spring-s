@@ -1,0 +1,449 @@
+---------------------------------5/4
+주석처리는 -- , /**/이다.
+
+테이블은 하나의 그릇 시트라고 보면 된다. 
+스키마 - 틀에 맞춰서 값을 입력하는것 (틀)
+
+컬럼(이름)
+bigint - long 
+unsigned - 정수값만 쓰겠다라는 표시 (크기는 똑같지만 음수값을 저장하지 않는다) 반대는 signed로 하여서 크기 200을 가진다.
+행(tuple,record,row)
+
+varchar 은 변화가 된다.
+char은 변화안됨 - 속도면에서 빠름
+
+not null -> 값을 비우지말라는 뜻  반대는 null 값을 비워도 됨
+
+primaty key ->사람으로 따지면 주민번호 고유번호이며 절대 중복값이 없다.
+ 행(가로)열(세로)
+
+DDL - 데이터베이스 스키마를 정의하는 일련의 SQL 명령입니다.
+AUTO_INCREMENT - 값넣는것에 신경을 안써도 된다는 명령 i++ 이라고 보면됨
+
+--Create
+INSERT INTO t_test
+(nm, jumin, age, addr)
+VALUES
+('신사임당','901211-2756712', 30, '대구시');
+
+-- Read (Select문)
+
+SELECT * from t_test;
+SELECT nm,jumin FROM t_test; 이름과 주민번호를 볼때 사용
+
+SELECT nm,jumin AS '주민번호' FROM t_test; - as를 사용하여 칼럼명을 잠깐 바꿀수있다.
+
+SELECT * FROM t_test WHERE nm = '홍길동'; ->홍길동 칼럼정보를 보여준다.
+
+And, or 연산자 사용 가능하며 And(between), Or(in)
+
+WHERE nm LIKE '%사임%'; -> 앞뒤로 사임이 들어가있으면 출력을 해준다.
+
+-- U (update문)
+
+WHERE id = 2;  -> where 에는 pk값이 들어간다.
+
+SET age = 22
+, addr = '부산시' -> 다중으로 바꾸고싶으면 이렇게 하면된다.
+
+
+----------------------------------------------------------- 5/8
+cmd창에서 작업을 한다. -> 설치된 곳 드라이버로 바꿔야 한다 d: -> div 를쓰면 폴더가 보인다. -> div /w를 하면 전체가 다보인다.
+
+윈도우 시작창에서 마리아 db 명령 프로프톰을 켜서 파일이나 폴더가 설치 되어있는 드라이버로 변경
+cd sakila-db -> mysql -uroot -p 엔터 -> 비번 누르고 -> source sakila-schema.sql;(소스스케마) -> source sakila-data.sql;(데이터 설치) -> show databases;(검증)
+use sakila;(내가 사용 하고싶은 히스토리 선택) -> show tables;
+
+하이디는 ; 사이의 명령어만 실행한다. 데이터베이스는 코드를 날려도 당장 없어지지 않는다.
+select now(); -> 현재 시간 보기 오라클은 (From dual; 까지 같이 써야됨) now()함수호출
+
+db에서의 주석
+-- Single Line Comment
+/*
+  Multi Lint Comments
+*/
+
+	char - 고정길이 -> char(10) 문자를 1개를쓰던 2개를 쓰던 무조건 10개의 길이를 차지 최대값(255)
+	varchar - 가변길이 -> char(10) 문자를 1개를 쓰면 1개 를 사용 한다. (가변성이 좋음 그래서 느림) 최대값(65535) 오라클기준으로는 varchar2 를써야도니다.
+	text - 많은 데이터를 적을 수있다. (가변문자)
+DB에서는 이미지를 저장을 왠만하면 안한다. DB에 부담을 주면 안되기 때문이다. 그래서 경로를 지정해준다.
+앱을 사용하면 장점은 push라는 기능이 있기때문에 좋다. 심지어 무료이다.
+push의 개념은 송수신국이 있다 (apple, google, naver) 거기서 전세계로 통신을 쏴준다.
+SHOW CHARACTER SET; -> 사용할수있는 character를 보여준다. (utf8을 설정안해주면 latin 이설정된다.), 이모지 까지 사용가능하다.
+
+	tinyint 
+	부호가 있는 -> 음수값을 저장 (-128 ~ 127)
+	부호가 없는  -> 양수값을 저장 (0 ~ 255)
+
+	높은 값은 bigint 사용 ->p.53 
+
+실수형은 사용을 잘안한다. 지수로저장(정확한값은 아님) 
+시간데이터 타입 
+
+대리키(id) - 변경할수없는 키, 자연키(비지니스키)(변경가능한키)
+대리키가 자연키보다 눈에 띄게 빠르다.
+모든 테이블은 pk값이있어야 하며 대리키로 한다.
+모든 컬럼에는 원소 하나를 가진다.
+N:M 관계일때는 테이블이 3개정도가 나온다.
+1:N , 1:1 관계는 테이블이 2개가 나온다.
+
+PK(나자신의 테이블 번호) , FK(참조하는 테이블 번호)(외래키)
+FK가 걸려있으면 FK가 걸려있는 스키마(테이블) 만 호출가능하다.(잘못된 값이 안들어가기위한 제약 조건) - FK가 걸려있는 값만 들어 갈수있게 됨
+UNSIGNED - 부호를 안쓰겠다. 반대는 SIGNED
+CHECK(eye_color IN ('BR', 'BL', 'GR')) 제약조건을 건다라는 뜻임
+costraint pk_person 프라이머리 키에 이름을 지정해주고 싶으면 사용
+DESC person; -> person 테이블의 정의를 볼수있으며 null값 허용인지 아닌지를 보여 준다..(null 값이 있는지 없는지를 볼수있다.)
+null <-> not null 
+
+SELECT(보고싶은 컬럼 명) ,  * <- * 은 All 이라는 뜻이 있다. 
+FROM 테이블명<- 어디테이블을 볼것인지 
+
+INSERT INTO 테이블명
+(
+	칼럼명1, 칼럼명2
+)
+VALUES
+(
+	칼럼1에들어갈 숫자, '칼럼2에 들어갈 문자'
+);
+한번더 실행을하면 제약조건이 뜬다.
+
+DELETE FROM 테이블명; ->테이블명에 있는 자료를 다 지운다.
+TRUNCATE 테이블명; -> DELETE 보다 더빠르다. 
+
+HTML, XML 둘 다 마크업 언어이다. (계산을 수행하지 않으므로 프로그래밍 언어가 아니다.)
+마크업 언어는 태그를 사용하여 문서 내의 요소를 정의하는 컴퓨터 언어이다.
+HTML은 웹 페이지의 구조를 개발하는데 사용되는 하이퍼 텍스트 마크업 언어이다.
+XML은 플랫폼간 데이터를 교환하는데 사용되는 확장 가능한 마크업 언어이다.
+
+JSON(JavaScript Object Notation) - > xml보다 빠르다.
+
+delete,update 문은 무조건 where 문이 있어야 한다. 
+UPDATE 테이블명
+SET 스키마(이름) = '변경할이름'
+WHERE person_id = 'PK값';
+
+PK값은 무조건 중복되지 않는 값으로 한다.
+
+STR_TO_DATE( 'DEC-21-1980','%b-%d-%Y') -> %Y는 4자리수의 연도를 받는다. STR_TO_DATE( '1980','%Y')를 사용하여 정수값을 문자열로 바꾸어 준다. 
+
+Select 문
+select - 쿼리 결과에 포함할 열을 결정
+from - 데이터를 검색할 테이블과, 테이블을 조인하는 방법을 식별
+where - 불필요한 데이터를 걸러냄, 내가 필료한 정보를 뽑아냄
+group by -공통 열 값을 기준으로 행을 그룹화
+having - 불필요한 그룹을 걸래냄
+oreder by - 하나이상의 열을 기준으로 최종결과의 행을 정렬
+
+설렉트 안에 설렉트들어가는것이 서브커리 이다.
+컬럼하나에 레코드 하나있는것이 스칼라값 이다.
+
+AS - 실제로 변화하지는 않고 결과값에서만 잠깐 바꿔준다.
+데이터베이스의 '+'는 사칙연산이다.
+CONCAT -> 문자열 합치기 이다.
+ASC-> 오름 차순
+DESC - > 내림차순
+DESC '테이블' -> 테이블의 정의를 볼수있는것
+distinct -> 중복값 제거
+SELECT -> 서브쿼리 문으로 사용
+join은 무한대로 걸수가 있다.
+IS NOT null -> null값을 보고싶지않을때 반대는 IS NULL
+WHERE return_date is null -> null값을 보고싶을때
+IFNULL (A.return_date, '반납안했음') -> null값이 있을때 ' ' 사이의 값으로 대체하는것
+
+ 기본 SQL쿼리문
+select : select 열이름 from 테이블명 where 조건;
+intsert : insert into 테이블명(추가하고자하는 열이름) values(열이름에따른 값입력);
+delete : delete from 테이블명 where 조건;
+update : update 테이블명 set 수정하고자 하는 컬럼명 = 수정하는 값;
+
+---------------------------------------------5/9
+DATETIME - 연도 날짜 시간
+NOW() - 현재 실행되는 시점의 시간을 나타내준다.
+PRIMARY KEY - (PK) 모든 레코드들을 구분할수 있는 유니크한 값 고유 번호 주민번호
+
+select 문 
+select + from 은 한셋트로 움직인다.
+select '내가보고싶은 컬럼명'
+from '내가보고싶은 테이블명'
+AS - 알리안스 "별칭" , "," 가 없이 공백이 있다면 알리안스 테이블명에 가능, 컬럼명에도 가능
+
+where절에는 ','를 사용할수없다. - 부분만 볼수있다.없다면 전체선택 예를들어 where절에 PK가 들어갔다면 경우의 수는 두가지 (한줄 나옴, 한줄도 안나옴)이유는 일치하지않으면 안나오고 일치하면 나온다.
+!= , <> 같은 의미를 가진다.
+or , || 같은 의미를 가진다. - IN( 데이터, 데이터)문 비슷한문법
+AND , && 같은 의미를 가진다. - BETWIN (데이터 AND 데이터)문 비슷함
+'%사임%' - 사임으로 시작을하던 끝나던 찾는다. -> %를 사용하고싶으면 LIKE를 사용해야 한다.
+LIKE 예제 - 테이블의 값을 찾을때 사용
+_ : 글자의 번호를 정해줌(EX 컬럼명 LIKE '홍_동')
+% : 글자숫자를 정해주지않음(EX 컬럼명 LIKE '홍%')
+
+PK값으로 통신을 많이 한다. 
+where절에는 where (조건) or (조건) 이 가능하다.
+
+-- group by
+
+-- group function 그룹함수
+-- sum, avg, min, max, count
+
+SELECT * FROM customer;
+
+SELECT COUNT(*) FROM customer; -> 전체 그룹을 다보는 것
+
+HAVING절은 카운트안에서 돌아가는것이고 WHERE절은 그룹하기전(GROUP BY)에 사용하여야 한다.
+
+join 문에서는 컬럼명앞에 AS의 이름을 붙여서 '.' 하고 정렬을 해주어야 한다. 아니면 오류 뜬다.
+FROM customer AS 별칭
+INNER JOIN rental AS 별칭
+ON A.customer_id = B.customer_id ---------조인문 예제
+
+한글 문자열의 크기는 ㄱㄴㄷㄹ 순으로 크다.
+데이터베이스에서 값은 대소문자를 구분한다.
+
+where 절에서 and 및 or연산자를 모두 사용하여 조건이 세개이상 포함될경우, 괄호를 써서 의도를 명확히 해야한다.
+
+SELECT * FROM film
+WHERE rental_duration<(SELECT rental_duration
+		       FROM film
+		       where film_id =762);  			--> 스칼라 예제
+
+
+SELECT LEFT('abcdefg',2) , RIGHT('abcdefg',2), MID('abcdefg',2,3); -> LEFT(문자열,몇번째까지) RIGHT(문자열,오른쪽부터몇번째) MID(문자열,어디서부터,몇번째까지)
+
+---------------------------------05/10
+GROUP BY store_id -- 레코드를 제외시키고 싶을때
+HAVING COUNT(무엇을 주던 상관없다) < 300; -- 300 보다 적은 그룹을 제외 시키고싶을때
+
+스칼라값 - 컬럼하나에 레코드 하나인것, 서브쿼리든 뭐든 상관이 없다.
+
+employees 테이블에서 직원 과 부서는 N : 1 관계이다. 
+N 대 N 관계는 테이블이 여러 테이블의 컬럼을 참조할때이다.
+
+_ -> _부분에는 자리를 차지하며 무엇이든 와도 된다.
+% -> %부분 뒤에는 뭐든 와도 된다. 개수에 상관없이 모든문자(0 포함)
+정규 표현식 REGEXP '^[AB ]' -> A,B로 시작되는 문자열 '[AB]$' ->A,B로 끝나는 문자열
+사용법->WHERE last_name REGEXP '^[QY]';
+분기문으로 비번을 만드는 작업은 어렵다 그래서 정규 표현식으로 하면 한줄로 할수있어서 알아두면 좋다.
+
+Restfwl <-> Ajax = 페이지에서 한부분만 refresh 하는 기술
+
+JOIN은 INNER JOIN, LEFT JOIN 만 알고 있으면된다.
+USING(똑같은 컬럼명) -> 참조하는 컬럼명이 같으면 사용할수있지만 왠만하면 안쓰는게 좋다.
+
+SELECT *
+FROM person A -- LEFT JOIN의 경우 얘가 기준이 된다. 
+LEFT JOIN favorite_food B
+ON A.person_id = B.person_id; -- 연결시킬게 없다면 null 값을 반환한다.
+
+문자열 비교는 엄청나게 느리다. 고로 숫자로 비교하는게 빠르다.
+
+스칼라값이 되는 확실한 방법은 -> WHERE 절에 PK값이 들어 가면된다. 스칼라일때는 '=' 이 가능 하다.
+
+서브쿼리는 WHERE 절, 테이블자리에 사용하려면 AS 를 무조건 주어야 된다, 컬럼자리에는 스칼라값으로 가능하다.
+
+SELECT * FROM actor
+WHERE (first_name, last_name) IN (('CATE', 'MCQUEEN'), ('CUBA', 'BIRCH')); -> 나이스한 코드
+
+-------------------------------------------05/11
+
+union -> 테이블을 합쳐서 보여주는 것이다. 
+union all -> union은 자동으로 중복 제거를 해주기 때문에 해당(union all)문자를 사용 하여 모두다 나타내줄수있다. 
+타입은 상관없이 형변환이 된다. 컬럼명은 제일 첫번째 선언한 이름을 따른다.
+조건은 위에 커리문 밑에 커리문 의 수가 같아야됨
+예시) SELECT 1 as num, 'abc' as str
+	UNION all
+	SELECT 9 as num, 'xyzaa' as str
+예시) SELECT 'customer' AS typ, first_name, last_name -- 소비자의 이름을 주고 소비자는 customer
+	FROM customer
+	UNION 
+	SELECT 'actor', first_name, last_name -- 배우는 actor 이름을 준다.
+	FROM actor
+	ORDER BY first_name;
+
+HAVING(*) ->이거만 사용하면 한줄밖에 안된다.
+
+SELECT @@SESSION.sql_mode;
+
+SET sql_mode='strict'; -- > ANSI 모드(문자열을 자르고 경고를 발생) 와 STRICT 모드(문제가 생기면 예외를 시켜버린다.)가 있다.
+
+cors에러가 뜨면 프론트엔드에서 백엔드로 보내는것은 걸린다. 그러므로 백엔드에서 작업을 해주어야 한다.
+concat은 프론트엔드에서 하는게 좋다.
+
+CHAR_LENGTH(칼럼명) -> 글자수를 알수가있다.
+POSITION('ur'IN lname) ->ur의 위치가 어디에 있는지 알려줌 
+STRCMP('abc','ABCC') 정렬 순서에서 첫번째 문자열이 두번째 문자열 앞에 오는 경우 -1
+		    문자열이 동일한 경우 0
+		   정렬 순서에서 첫번째 문자열이 두번째 문자열 뒤에 오는경우 1
+NAME REGEXP '^[C]' -- 트루 펄스 판별해주는 것
+LOCATE('n', text_fld, 12) -> 'n' 이어디에 있는지 , text_fld열에 ,12번째 부터 뒤로 찾아본다.
+REPLACE(first_name, 'BA', 'DA') -> first_name에 있는 'BA' 를 'DA'로 바꾸고 싶다 라고 임의로 바꾼것임
+INSERT('goodbye world',9,0,'cruel '); -> INSERT('바꾸고 싶은 문장',어디서부터지울지숫자,몇자리부터 지울지,삽일할 문자);
+SUBSTRING(email, 3, 6), SUBSTR(email, 3, 3) -> SUBSTR(컬럼명,어디서부터 시작, 몇자리 표시)
+
+MOD(숫자, 뭐로 나눌지) - 나머지를 리턴 한다.
+ TRUNCATE(실수의 값, 몇자리까지 나타낼지); - 실수의 값을 몇자리까지 리턴할지
+ABS -> 절대값을 나타내준다(음수던 양수던 값만 나타냄)
+
+SELECT NOW() - 지금 날짜 시간 , CURRENT_DATE() - 현재연월일, CURRENT_time() - 현재시간, CURRENT_timestamp() - 지금날짜 시간;
+SELECT CAST('2023-05-11 16:46:30' AS DATETIME), CONVERT('2023-05-11 16:46:30', DATETIME) -> 형변환해주는 것
+SELECT DATE_ADD(CURRENT_DATE(),INTERVAL 5 DAY); -> 5일뒤를 보여주는 것
+SELECT DATE_ADD(NOW(),INTERVAL '03:27:11' hour_second); -> 3시간 27분 11초 후를 보여 주는것
+
+SELECT * FROM employees
+WHERE emp_no = 10001; --> 10001번의 고용인의 정보를 보는 것
+
+UPDATE employees
+SET birth_date = DATE_ADD(birth_date, INTERVAL '2-1' YEAR_MONTH)
+WHERE emp_no = 10001; --> birth_date를 2년1개월 후로 바꾸어 준다.
+
+CURDATE()
+, SYSDATE() -- 시스템의 연도 월 일 시분초
+, WEEKDAY(NOW()) -- 요일을 숫자로 나타내줌 (-- 월(0),화(1),수(2),목(3),금(4),토(5),일(6))
+, DAYNAME(NOW()) -- 요일을 문자로 나타내줌
+, LAST_DAY(NOW()) -- 그달의 마지막일
+, LAST_DAY('2023-06-11') 
+, DATE_SUB(NOW(), INTERVAL '2' YEAR) -- 2년후를 나타내준다.
+, EXTRACT(MONTH FROM NOW()) -- 년(year), 월(month),일(day) 값만 보여줄수있다. 지금은 월만 보여준다.
+, DATEDIFF('2023-09-20 00:00:00', NOW()) -- 2023-09-20에서 현재년월 까지 남은 일수 계산할수있음
+
+------------------------------------------5/12
+quore -> 이스케이프문자까지 찍어주는 친구이다.
+
+-- @@session -> 나의 개인 공간 (저장공간) 
+-- 크롬을 키면 유일한 ID를 만든다. 요청을 했는데 처음왔으니까 서버 메모리에서 세션을 만들어서 부여  
+-- 5분까지는 세션유지 요청하면 다시 리셋 (예전은 쿠키) PK값으로 서버에서는 구분을 한다. Wep tokken
+-- 구분할수있도록 세션이라는 것을 사용한다. 브라우저에서 완전히 껏다가 다시들어가야지 세션이 날라가서
+-- 다시 로그인을 할수있음 <-> 웹토큰,JSON,JSP (껏다가 다시켜도 로그인정보가 담겨있으면)
+-- pageContext, session, application, request
+
+-- limit(1), limist(1,1) --> 인덱스값이라서 0부터 시작 limit(인덱스 값), limist(인덱스값부터,몇개를 나타내줄지), 속도가 엄청빠르다.
+
+SELECT customer_id, MAX(amount), MIN(amount) 
+FROM payment
+GROUP BY customer_id; --> 맥스와 민값을 구하는데 그룹바이를 해주면 의미가 있다 (명시적그룹) (암시적그룹) - 전체레코드를 한레코드로 본다
+
+COUNT(return_date) -> 컬럼에 null값이 있으면 빼서 샘을 더해준다.
+max(DATEDIFF(return_date, rental_date)) ->이렇게 하면 반납
+
+GROUP BY fa.actor_id,f.rating WITH ROLLUP; -- actor_id의 PK값의 rating에는 null값이 들어간다.
+-- null값의 의미는 PK값의 전체 합계이다.
+
+-- 05/15
+페이징 원리 
+프론트엔드에서 넘어오는값 - 몇페이지 남길지, 페이지 숫자
+한페이지에 50개씩 나타내준다고 한다면 현재 페이지 1 
+select *
+form t_board
+order by iboard desc
+limit 0,50
+
+--pageCnt:50 (페이지당 글수)
+-- currentPage: 1 > limit 0,50 -- pageCnt 값은 거의 고정값을 가진다.
+-- currentPage: 2 > limit 50,50
+-- currentPage: 3 > limit 100,50
+-- currentPage: 4 > limit 150,50
+자바에서 데이터 처리를 한다음 DB로 넘어 온다. -> (currentPage-1) * rowCnt 자바에서의 나타내주는 식 - 이건 sql방식
+오라클기준은 0,50 - 50,100 -  100,150 이런식으로 된다. 
+
+-- order by 2 DESC -> 설렉트 구문(컬럼)에서 2번째기준으로 한다는 뜻이다.
+count(컬럼명) --> nice한 구문
+최신버전을 잘안쓰는이유는 검증이 잘안되어 있기때문이다. 하지만 버전은 계속 올라 가서 배워놓는게 좋다.
+
+where 구문에서 null값을 보고싶으면 ~~ is null <-> is not null
+
+비상관 -  완전히 독립적으로 실행 <-> 상관 - 다른 서브쿼리는 포함 구문의 열을 참조
+
+all  -> 한집합의 모든 값과 하나의 값을 비교할 수 있습니다., 모든값이 true 여야 한다.(AND) <-> any는 반대이다.(OR)
+
+case -> case 문은 End를 무조건 써야된다. 그리고 END 다음에 AS를 줘야된다.
+예제
+SELECT active,
+	case
+		when active = 1  -- 조건문
+		then '활성화' -- 조건이 true 일경우 
+		ELSE '비활성화' -- 조건이 falsr 일 경우 
+	END active_str -- 끝난 조건의 출력
+FROM customer; -> 1일 경우 
+- then => else 이렇게 계속 사용하면 else-if 랑 같은 효과가 난다.
+if(active = 1, '활성화', '비활성화') active_str2 -> 3항식 이랑 비슷하게 사용
+
+예제 -- PG,G 전체이용, NC-17 17세 이상,PG-13 13세이상,R은 청소년관람불가
+SELECT 
+	case
+		when rating IN ('PG','G') then '전체이용가'
+		when rating = ('NC-17') then '17세 이상'
+		when rating = ('PG-13') then '13세 이상'
+		ELSE '청소년 관람불가'
+	END rating_str
+FROM film;
+
+상관 서브쿼리
+
+[SQL] Transaction(트랜잭션) -> 여러가지의 업무를 하나의 업무로 만들어주는것이 트렌젝션이다. 일단오토커밋을 끄고 실행을 하고 오류가 없으면 커밋을 하고 오토커밋을 킨다. 하지만 에러뜨면 롤백처리하는것, 문제 발생하는 것을 원상복구 시켜주는 것이다.
+SET autocommit =0; -- 오토커밋을 끈다.
+ROLLBACK; -- 롤백이다.
+COMMIT; -- 맘에 드니까 저장을 한다.
+
+내부쿼리
+웨어절에 사용하는 컬럼은 보통 인덱스값을 넣어준다. 
+인덱스 -> 내부적으로 정렬(오름차순이던내림차순)을 해놓은것을 인덱스이다.  ex) PK의 특징은(인덱스, 유니크, not null)
+
+뷰란 작성한 쿼리 문을 담아놓는 것
+view 사용법
+CREATE VIEW view_test_1 as ->SELECT * FROM view_test_1;
+지우는 방법 -> DROP VIEW view_test_1;
+
+-------------------------------5/16
+책에 없는 내용 중요 (https://code-lab1.tistory.com/48)
+정규화의 장점은 정규화이다. 역정규화도 있다. -> 은행이였다면 정규화를 열심히 해야 한다.
+정규화 - 이상현상이 있는 릴레이션을 분해하여 이상현상을 없애는 과정 -> 한테이블을 여러테이블로 나눈다.
+1.데이터베이스 변경 시 이상현상(Anomaly)을 제거할 수 있다. - 중요
+2. 정규화된 데이터베이스 구조에서는 새로운 데이터 형의 추가로 인한 확장시, 구조를 변경하지 않아도 되거나 일부만 변경 해도 된다.
+
+단점
+릴레이션의 분해로 인해 릴레이션 간의 join 연산이 많아 진다.
+데이터의 중복을 완벽하게 제거는 불가능 하다.
+데이터 처리할때 속도가 빨라질 수도 있고 느려질 수도 있다.
+조인이 많이 발생하여 성능 저하가 나타나면 반정규화(De-normalization)를 적용할 수도 있다.
+
+제 1 정규형(1NF)
+규칙
+1. 각 컬럼이 하나의 속성만을 가져야한다.
+2. 하나의 컬럼은 같은 종류나 타입(type)의 값을 가져야 한다.
+3. 각 컬럼이 유일한(ex PK 값) 이름을 가져야 한다.
+4. 컬럼의 순서가 상관없어야 한다. -> 순서는 상관이 없다. ->데이터의 이름으로 가져올거기 때문에
+
+제 2 정규형 (2NF)
+규칙
+1. 1정규형을 만족해야 한다.
+2. 모든 컬럼이 부분적 종속(Partial Dependency)이 없어야 한다. == 모든 칼럼이 완전 함수 종속을 만족해야 한다.
+
+부분적 종속이란 기본키 중에 특정 컬럼에만 종속되는 것이다. 
+완전 함수 종속이란 기본키의 부분집합이 결정자가 되어선 안된다는 것이다. ( 비슷한 말이다 )
+
+제 3 정규형(3NF)
+규칙
+1. 2 정규형을 만족해야 한다.
+2. 기본키를 제외한 속성들 간의 이행 종속성 (Transitive Dependency)이 없어야 한다.
+
+1. 이상현상(Anomly)
+[ 이상현상의 개념 ]
+삭제 이상: 튜플 삭제 시 같이 저장된 다른 정보까지 연쇄적으로 삭제되는 현상
+삽입 이상: 튜플 삽입 시 특정 속성에 해당하는 값이 없어 NULL을 입력해야 하는 현상
+수정 이상: 튜플 수정 시 중복된 데이터의 일부만 수정되어 일어나는 데이터 불일치 현상
+삭제 이상(Deletion Anomly)란 튜플을 삭제할 때 저장되어있는 다른 정보도 삭제되어 연쇄 삭제(Triggered Deletion)의 문제가 발생하는 경우를 의미
+
+UPDATE t_deal A
+INNER JOIN (
+	SELECT deal_id, SUM(A.quantity * C.price) calc_price
+	FROM t_deal_sub A
+	INNER JOIN t_parts C
+	ON A.parts_id = C.id
+	GROUP BY deal_id
+) B
+ON A.id = B.deal_id
+SET A.price = B.price;   --> 고급 업데이트문 인데 구현하기가 힘들듯
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">

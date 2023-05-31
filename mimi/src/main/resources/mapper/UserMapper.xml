@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.mimi.user.UserMapper">
+
+    <insert id="insUser">
+        INSERT INTO t_user
+        SET uid = #{uid}
+        , upw = #{upw}
+        , nm = #{nm}
+        , gender = #{gender}
+        , addr = #{addr}
+    </insert>
+
+    <select id="selUserByUid" resultType="UserLoginVo">
+        SELECT iuser, uid, upw, nm, gender, addr, main_pic mainPic
+        FROM t_user
+        WHERE uid = #{uid}
+    </select>
+
+    <update id="updUserPw">
+        UPDATE t_user
+        SET upw = #{upw}
+        WHERE iuser = ${iuser}
+    </update>
+
+</mapper>

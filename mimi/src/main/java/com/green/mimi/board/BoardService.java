@@ -33,7 +33,7 @@ public class BoardService {
     }
 
     public int selBoardMaxPage(int row) {
-        return mapper.selBoardMaxPage(row);
+        return mapper.selBoardMaxPage();
     }
 
     public BoardDetailVo selBoardDetail(BoardDetailVo vo){

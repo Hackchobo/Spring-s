@@ -7,4 +7,32 @@
         values
         (#{iboard}, #{iuser}, #{ctnt})
     </insert>
+
+    <select id="selBoardCmt" resultType="CmtVo">
+        SELECT A.iboard_cmt, A.iboard, A.iuser, B.nm writer, B.main_pic writerMainPic
+        , A.ctnt, A.created_at createdAt
+        FROM t_board_cmt A
+        INNER JOIN t_user B
+        ON A.iuser = B.iuser
+        WHERE A.iboard = #{iboard}
+        limit #{startIdx}, #{row}
+    </select>
+
+    <delete id="delBoardCmt">
+        DELETE FROM t_board_cmt
+        WHERE iboard_cmt = #{iboardCmt} AND iuser = #{iuser}
+    </delete>
+
+    <select id="selBoardCmtRowCountByIBoard">
+        SELECT count(iboard_cmt) FROM t_board_cmt
+        WHERE iboard = #{iboard}
+    </select>
+
+    <update id="updBoardCmt">
+        UPDATE t_board_cmt
+        SET
+        ctnt = #{ctnt},
+        updated_at = NOW()
+        WHERE iboard_cmt = #{iboardCmt} and iuser = #{iuser}
+    </update>
 </mapper>

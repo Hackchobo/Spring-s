@@ -1,18 +1,27 @@
 package com.green.mimi.board;
 
 import com.green.mimi.board.model.*;
+import com.green.mimi.cmt.CmtController;
+import com.green.mimi.cmt.CmtService;
+import com.green.mimi.cmt.model.CmtDelDto;
+import com.green.mimi.cmt.model.CmtRes;
+import com.green.mimi.cmt.model.CmtSelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 
 @Service
 public class BoardService {
     private final BoardMapper mapper;
+    private final CmtService cmtService;
 
     @Autowired
-    public BoardService(BoardMapper mapper) {
+    public BoardService(BoardMapper mapper, CmtService cmtService) {
         this.mapper = mapper;
+        this.cmtService = cmtService;
     }
 
     public int insBoard(BoardInsDto dto) {
@@ -33,19 +42,51 @@ public class BoardService {
     }
 
     public int selBoardMaxPage(int row) {
-        return mapper.selBoardMaxPage();
+        int count = mapper.selBoardRowCount();
+        return (int)Math.ceil((double)count/ row);
     }
 
-    public BoardDetailVo selBoardDetail(BoardDetailVo vo){
-        return mapper.selBoardDetail(vo);
-    }
+    public BoardDetailCmtVo2 selBoardDetail(BoardSelDto dto){
+   // public BoardDetailCmtVo selBoardDetail(BoardSelDto dto){
+        BoardDetailVo vo = mapper.selBoardDetail(dto);
 
-    public int delBoard(BoardDelDto dto) {
-        return mapper.delBoard(dto);
+        CmtSelDto cmtDto = new CmtSelDto();
+        cmtDto.setIboard(dto.getIboard());
+        cmtDto.setPage(1);
+        cmtDto.setRow(5);
+        CmtRes cmt = cmtService.selBoardCmt(cmtDto);
+
+        return BoardDetailCmtVo2.builder()
+                .board(vo)
+                .cmt(cmt)
+                .build();
+        /*BoardDetailCmtVo.builder()
+                .iboard(vo.getIboard())
+                .title(vo.getTitle())
+                .ctnt(vo.getCtnt())
+                .createdAt(vo.getCreatedAt())
+                .writer(vo.getWriter())
+                .writerMainPic(vo.getWriterMainPic())
+                .cmt(cmt)
+                .build();*/
     }
 
     public int updBoard(BoardUpdDto dto) {
         return mapper.updBoard(dto);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public int delBoard(BoardDelDto dto) throws Exception {
+
+        CmtDelDto cmtDto = new CmtDelDto();
+        cmtDto.setIboard(dto.getIboard());
+        cmtService.delBoardCmt(cmtDto);
+        // 그 글에 달려있는 댓글을 전부 삭제해야 함.
+        int result = 0;
+        result = mapper.delBoard(dto);
+        if (result == 0) {
+            throw new Exception("삭제 권한 없음");
+        }
+        return result;
+    }
 }

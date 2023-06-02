@@ -18,11 +18,6 @@
         limit #{startIdx}, #{row}
     </select>
 
-    <delete id="delBoardCmt">
-        DELETE FROM t_board_cmt
-        WHERE iboard_cmt = #{iboardCmt} AND iuser = #{iuser}
-    </delete>
-
     <select id="selBoardCmtRowCountByIBoard">
         SELECT count(iboard_cmt) FROM t_board_cmt
         WHERE iboard = #{iboard}
@@ -35,4 +30,17 @@
         updated_at = NOW()
         WHERE iboard_cmt = #{iboardCmt} and iuser = #{iuser}
     </update>
+
+    <delete id="delBoardCmt" parameterType="CmtDelDto">
+        Delete from t_board_cmt
+        WHERE
+        <if test="iboardCmt>0 and iuser>0">
+            iboard_cmt=#{iboardCmt}
+            AND iuser = #{iuser}
+        </if>
+        <if test="iboard > 0">
+            iboard=#{iboard}
+        </if>
+    </delete>
+
 </mapper>

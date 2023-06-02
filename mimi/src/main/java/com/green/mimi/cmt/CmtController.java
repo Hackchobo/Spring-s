@@ -38,11 +38,10 @@ public class CmtController {
     public CmtRes getBoardCmt(@PathVariable int iboard
             ,@RequestParam @Min(value = 1) int page
             , @RequestParam(defaultValue = "5") int row) {
-        CmtSelDto dto = CmtSelDto.builder()
-                .iboard(iboard)
-                .page(page)
-                .row(row)
-                .build();
+        CmtSelDto dto = new CmtSelDto();
+                dto.setIboard(iboard);
+                dto.setPage(page);
+                dto.setRow(row);
         return service.selBoardCmt(dto);
     }
 

@@ -35,10 +35,9 @@ public class BoardController {
             "row: 게시물 나타낼 갯수,<br>")
     public List<BoardVo> getBoard(@RequestParam(defaultValue = "1") int page
             , @RequestParam(defaultValue = "30") int row) {
-        BoardSelDto dto = BoardSelDto.builder()
-                .page(page)
-                .row(row)
-                .build();
+        BoardSelDto dto = new BoardSelDto();
+        dto.setPage(page);
+        dto.setRow(row);
         return service.selBoard(dto);
     }
 
@@ -52,21 +51,11 @@ public class BoardController {
     @GetMapping("/{iboard}")
     @Operation(summary = "게시물 하나씩 보기", description = "" +
             "iboard : 보고싶은 게시물 번호 <br>" )
-    public BoardDetailVo BoardDetail(@PathVariable int iboard) {
-        BoardDetailVo aa = new BoardDetailVo();
-        aa.setIboard(iboard);
-        return service.selBoardDetail(aa);
-    }
-
-    @DeleteMapping()
-    @Operation(summary = "게시물 삭제", description = "" +
-            "iboard : 삭제할 게시물 번호<br>" +
-            "iuser : 삭제할 유저의 아이디 <br>")
-    public int BoardDel(@RequestParam int iboard, @RequestParam int iuser){
-        BoardDelDto dto = new BoardDelDto();
+    public BoardDetailCmtVo2 BoardDetail(@PathVariable int iboard) {
+    //public BoardDetailCmtVo BoardDetail(@PathVariable int iboard) {
+        BoardSelDto dto = new BoardSelDto();
         dto.setIboard(iboard);
-        dto.setIuser(iuser);
-        return service.delBoard(dto);
+        return service.selBoardDetail(dto);
     }
 
     @PutMapping()
@@ -77,5 +66,16 @@ public class BoardController {
             "ctnt : 수정할 본문 <br>")
     public int updBoard(@RequestBody BoardUpdDto dto){
         return service.updBoard(dto);
+    }
+
+    @DeleteMapping()
+    @Operation(summary = "게시물 삭제", description = "" +
+            "iboard : 삭제할 게시물 번호<br>" +
+            "iuser : 삭제할 유저의 아이디 <br>")
+    public int BoardDel(@RequestParam int iboard, int iuser) throws Exception {
+        BoardDelDto dto = new BoardDelDto();
+        dto.setIboard(iboard);
+        dto.setIuser(iuser);
+        return service.delBoard(dto);
     }
 }

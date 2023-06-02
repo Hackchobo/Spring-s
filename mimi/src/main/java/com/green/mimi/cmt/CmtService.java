@@ -54,11 +54,11 @@ public class CmtService {
                 .build();
     }
 
-    public int delBoardCmt(CmtDelDto dto) {
-        return mapper.delBoardCmt(dto);
-    }
-
     public int updBoardCmt(CmtEntity entity) {
         return mapper.updBoardCmt(entity);
+    }
+
+    public int delBoardCmt(CmtDelDto dto) {
+        return mapper.delBoardCmt(dto);
     }
 }

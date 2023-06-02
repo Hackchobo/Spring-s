@@ -9,8 +9,8 @@ import java.util.List;
 public interface BoardMapper {
     int insBoard(BoardEntity dto);
     List<BoardVo> selBoard(BoardSelDto dto);
-    int selBoardMaxPage(); // int OOO 해도 상관 없음
-    BoardDetailVo selBoardDetail(BoardDetailVo vo);
+    int selBoardRowCount(); // int OOO 해도 상관 없음
+    BoardDetailVo selBoardDetail(BoardSelDto dto);
     int delBoard(BoardDelDto dto);
     int updBoard(BoardUpdDto dto);
 }

@@ -1,11 +1,10 @@
 package com.green.mimi.board.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class BoardSelDto {
+    private int iboard;
     private int startIdx;
     private int page;
     private int row;
